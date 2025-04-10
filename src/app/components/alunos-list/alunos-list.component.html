@@ -1,0 +1,80 @@
+<h2>Lista de Alunos</h2>
+
+<div class="mb-4 text-center">
+  <span *ngIf="nomeArquivo" class="badge bg-primary fs-4 py-2 px-3">
+    📄 Arquivo importado: {{ nomeArquivo }}
+  </span>
+</div>
+
+
+<!-- restante da tabela/listagem -->
+
+
+<form id="formularioAluno" (ngSubmit)="salvarAluno()" class="form-grid">
+  <div class="grid-row">
+    <input
+  [(ngModel)]="novoAluno.ra"
+  name="ra"
+  placeholder="RA"
+  required
+  [readonly]="editando !== null"
+  (ngModelChange)="atualizarAnoPeloRA()"
+  [ngClass]="{ 'readonly-input': editando !== null }"
+/>
+
+<input [(ngModel)]="novoAluno.ano" name="ano" placeholder="Ano" type="number" [readonly]="editando !== null" class="readonly-input" />
+    <input [(ngModel)]="novoAluno.nome" name="nome" placeholder="Nome" required />
+  </div>
+
+  <div class="grid-row">
+    <input [(ngModel)]="novoAluno.equipe" name="equipe" placeholder="Equipe" />
+    <input [(ngModel)]="novoAluno.orientador" name="orientador" placeholder="Orientador" />
+    <input [(ngModel)]="novoAluno.tema" name="tema" placeholder="Tema" />
+  </div>
+
+  <div class="grid-row">
+    <textarea [(ngModel)]="novoAluno.observacoes" name="observacoes" placeholder="Observações" class="observacoes-textarea"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">
+    {{ editando ? 'Atualizar' : 'Salvar' }}
+  </button>
+</form>
+
+
+<div class="filtros-container">
+  <input [(ngModel)]="filtroNome" (input)="buscarPorNome()" placeholder="Buscar pelo nome do aluno" />
+  <input [(ngModel)]="filtroEquipe" (input)="buscarPorEquipe()" placeholder="Buscar pela equipe" />
+  <input [(ngModel)]="anoBusca" (input)="buscarPorAno()" placeholder="Buscar por ano..." />
+</div>
+
+<table class="table table-striped table-bordered mt-4">
+  <thead>
+    <tr>
+      <th (click)="ordenarPor('ra')">RA</th>
+      <th (click)="ordenarPor('ano')">Ano</th>
+      <th (click)="ordenarPor('nome')">Nome</th>
+      <th (click)="ordenarPor('equipe')">Equipe</th>
+      <th (click)="ordenarPor('orientador')">Orientador</th>
+      <th (click)="ordenarPor('tema')">Tema</th>
+      <th (click)="ordenarPor('observacoes')">Observações</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let aluno of alunos">
+      <td>{{ aluno.ra }}</td>
+      <td>{{ aluno.ano }}</td>
+      <td>{{ aluno.nome }}</td>
+      <td>{{ aluno.equipe }}</td>
+      <td>{{ aluno.orientador }}</td>
+      <td>{{ aluno.tema }}</td>
+      <td>{{ aluno.observacoes }}</td>
+      <td>
+        <button class="btn btn-sm btn-warning me-1" (click)="editar(aluno)">Editar</button>
+        <button class="btn btn-sm btn-danger" (click)="deletar(aluno.ra)">Excluir</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

@@ -1,0 +1,10 @@
+.ativo {
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.navbar-nav .nav-link:hover {
+  background-color: #e0e0e0; /* Cinza claro mais escuro */
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
