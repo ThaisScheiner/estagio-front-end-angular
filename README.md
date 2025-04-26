@@ -11,7 +11,7 @@ A aplicação é composta por dois principais módulos:
 
 ---
 
-## Backend
+## Backend - https://github.com/ThaisScheiner/estagio-tcc-back-end
 
 ### Tecnologias Utilizadas
 - **Java 17**
