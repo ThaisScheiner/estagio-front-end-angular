@@ -1,59 +1,91 @@
-# EstagioFrontEndAngular
+# Documentação do Sistema de Gerenciamento de Alunos de TCC
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+## Visão Geral
+Este sistema foi desenvolvido com o objetivo de facilitar o gerenciamento de alunos que participam de trabalhos de conclusão de curso (TCC), especialmente em contextos onde o uso de ferramentas como o Microsoft Excel está limitado. A motivação principal para a criação desta aplicação surgiu da necessidade de organizar e compartilhar informações dos alunos de maneira eficiente, já que o Excel Online estava indisponível devido à falta de espaço no OneDrive e a versão desktop do Office não estava instalada.
 
-## Development server
+A aplicação supre totalmente essa carência, oferecendo uma solução leve, rápida e funcional para cadastrar, filtrar, editar, importar/exportar dados e visualizar estatísticas dos alunos que realizaram a devolutiva de mensagens, facilitando a comunicação com a professora responsável.
 
-To start a local development server, run:
+A aplicação é composta por dois principais módulos:
+- Backend: Desenvolvido em Java com Spring Boot
+- Frontend: Desenvolvido em Angular 19 com standalone components
 
-```bash
-ng serve
-```
+---
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Backend
 
-## Code scaffolding
+### Tecnologias Utilizadas
+- **Java 17**
+- **Spring Boot 3**
+- **Spring Web**
+- **Spring Data JPA**
+- **H2 Database (em memória)**
+- **Apache POI** (para leitura/escrita de arquivos Excel)
+- **Lombok** (para reduzir boilerplate)
+- **CORS configurado** para permitir acesso ao frontend Angular
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Estrutura de Entidades
+- **Aluno**: representa um aluno e possui os atributos: `ra`, `ano`, `nome`, `equipe`, `orientador`, `tema`, `observacoes`, `disciplina`
 
-```bash
-ng generate component component-name
-```
+### Principais Funcionalidades
+- **CRUD de Alunos**: endpoints para criação, leitura, atualização e exclusão
+- **Filtro por nome, equipe e ano**
+- **Importação de Excel**: substitui todos os dados existentes por novos registros do Excel
+- **Exportação para Excel**: gera planilha com coloração por equipe
+- **Estatísticas**: endpoint que retorna dados agregados para construção de gráficos
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+### Endpoints Principais
+- `GET /alunos`
+- `POST /alunos`
+- `PUT /alunos/{ra}`
+- `DELETE /alunos/{ra}`
+- `GET /alunos/nome/{nome}`
+- `GET /alunos/equipe/{equipe}`
+- `GET /alunos/ano/{ano}`
+- `POST /alunos/importar`
+- `GET /alunos/exportar`
+- `GET /alunos/estatisticas`
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## Frontend
 
-To build the project run:
+### Tecnologias Utilizadas
+- **Angular 19**
+- **Standalone Components** (sem NgModules)
+- **TypeScript**
+- **RxJS** (para gerenciamento reativo de dados)
+- **Bootstrap 5** (para estilo)
+- **HTML5/CSS3/SCSS**
 
-```bash
-ng build
-```
+### Estrutura de Componentes
+- `alunos-list`: componente principal com CRUD, filtros, ordenação e formulário
+- `upload`: importa arquivos Excel
+- `estatisticas`: exibe gráficos com dados agregados
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### Funcionalidades
+- **Listagem de alunos** com opção de ordenação clicando nos cabeçalhos
+- **Formulário de inserção e edição**:
+  - RA e Ano ficam em modo somente leitura durante edição com fundo cinza escuro para indicar a restrição
+  - Ano calculado automaticamente a partir do RA
+- **Filtros** por nome, equipe e ano
+- **Mensagens de sucesso e erro** com `window.alert`, como "Aluno salvo com sucesso" ou mensagens de falha
+- **Tabela com dados e ações de editar/excluir**
+- **Destaque visual para arquivos Excel importados**
 
-## Running unit tests
+### Integração com Backend
+Todos os dados são obtidos dinamicamente por meio de chamadas HTTP aos endpoints Spring Boot. Os dados atualizados automaticamente são propagados com `Subject` via serviço (`alunoService`).
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+---
 
-```bash
-ng test
-```
+## Considerações Finais
+Este sistema foi planejado para ser leve, funcional e extensível. Ele resolve de forma prática um problema real enfrentado pelo autor, eliminando a dependência de software de planilhas local e permitindo manter e compartilhar dados organizados de forma eficaz com a professora.
 
-## Running end-to-end tests
+Com a separação clara entre frontend e backend, é fácil evoluir para novos recursos como autenticação, gerenciamento de professores e equipes.
 
-For end-to-end (e2e) testing, run:
+### Possíveis melhorias futuras:
+- Substituir `alert()` por um sistema de `toast`
+- Adicionar autenticação JWT
+- Persistir banco em PostgreSQL ou MySQL
+- Testes unitários (JUnit/Angular)
+- Deploy em nuvem (Render/Heroku/Vercel)
 
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
