@@ -50,6 +50,7 @@ A aplicação é composta por dois principais módulos:
 ## Frontend
 
 ### Tecnologias Utilizadas
+- **Usar versão mais atual do NodeJs**
 - **Angular 19**
 - **Standalone Components** (sem NgModules)
 - **TypeScript**
